@@ -2,9 +2,6 @@
 //  ViewController.swift
 //  ARWarpDoor
 //
-//  Created by Hiroki Yoshioka on 2023/01/29.
-//
-
 import UIKit
 import SceneKit
 import ARKit
@@ -21,25 +18,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        // anchorの型チェック
+        // 型チェック
         if anchor is ARPlaneAnchor {
-            // anchorをARPlaneAnchor型にキャスト
+            // ARPlaneAnchor型にキャスト
             let planeAnchor = anchor as! ARPlaneAnchor
             
-            // "classroom.scn"の読み込み
+            // classroom.scnを読み込む
             let roomScene = SCNScene(named: "art.scnassets/classroom.scn")!
             
-            // シーンから"Classroom"の取り出し
-            if let roomNode = roomScene.rootNode.childNode(withName: "Classroom", recursively: true) {
+            // シーンからclassroomAllを取り出す
+            if let roomNode = roomScene.rootNode.childNode(withName: "classroomAll", recursively: true) {
                 
-                // 平面検出した場所を表示位置に指定
+                // 平面検出の場所をレンダリング位置に設定する
                 roomNode.position = SCNVector3(x: planeAnchor.center.x, y: planeAnchor.center.y, z: planeAnchor.center.z)
                 
-                // ノードの追加
+                // ノードを追加
                 node.addChildNode(roomNode)
             }
             
-            // 平面検出のOFF
+            // 平面検出を止める
             let configuration = ARWorldTrackingConfiguration()
             sceneView.session.pause()
             sceneView.session.run(configuration)
